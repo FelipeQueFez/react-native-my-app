@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
+import { usecases } from "../../di/container";
 import type { Todo } from "../../domain/entities/todo";
-import { usecases } from "../../main/di";
 
 export function useTodos() {
   const [todos, setTodos] = useState<Todo[]>([]);
