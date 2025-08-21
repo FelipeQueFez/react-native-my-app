@@ -1,0 +1,13 @@
+{
+  "appName": "Feature Modules Demo",
+  "nav.openTodos": "Open Todos",
+  "todos.title": "Todos",
+  "add": "Add",
+  "placeholder.addTask": "Add a task...",
+  "loading": "Loading...",
+  "error.loadTodos": "Failed to load todos",
+  "emptyList": "No tasks yet—add one above.",
+  "status.completed": "Completed",
+  "status.open": "Open",
+  "delete": "Delete"
+}

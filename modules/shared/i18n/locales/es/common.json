@@ -1,0 +1,13 @@
+{
+  "appName": "Demo de Módulos",
+  "nav.openTodos": "Abrir Tareas",
+  "todos.title": "Tareas",
+  "add": "Añadir",
+  "placeholder.addTask": "Añade una tarea...",
+  "loading": "Cargando...",
+  "error.loadTodos": "No se pudo cargar las tareas",
+  "emptyList": "No hay tareas — añade una arriba.",
+  "status.completed": "Completada",
+  "status.open": "Pendiente",
+  "delete": "Eliminar"
+}
