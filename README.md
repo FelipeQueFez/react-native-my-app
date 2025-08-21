@@ -1,50 +1,150 @@
-# Welcome to your Expo app 👋
+# Modular Clean Todo (Expo + React Native)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A sample mobile app that demonstrates **feature-based modules** with **Clean Architecture**, **i18n**, and **multi-theme (Light/Dark/System)** using **Expo Router** and **TypeScript**.
 
-## Get started
+> **Node:** `v22.18.0`  
+> **Targets:** iOS · Android · Web
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## ✨ Features
 
-2. Start the app
+- **Modular-by-feature**: `modules/<feature>` (todos, shared/i18n, shared/theme)
+- **Clean Architecture per feature**: `domain → application (use cases) → data → presentation → di`
+- **i18n**: i18next + react-i18next + expo-localization, persisted language
+- **Theming**: Light/Dark/System with tokens, persisted choice, Nav + StatusBar in sync
+- **Navigation**: Expo Router (React Navigation under the hood)
+- **Persistence**: AsyncStorage (swap to SQLite/API without touching use cases)
+- **Accessibility**: labeled pressables, contrast-aware status bar
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## 🚀 Quickstart
 
 ```bash
-npm run reset-project
+# 0) Ensure Node v22.18.0 (or compatible) is active
+
+# 1) Install dependencies
+npm install
+
+# 2) Start Metro
+npx expo start
+
+# 3) Open a target
+#   - Press "a" (Android), "i" (iOS), or open the web tab
+#   - Or scan the QR with Expo Go
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+**Troubleshooting**
 
-## Learn more
+```bash
+# Reset Metro cache if things act weird
+npx expo start -c
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+---
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 📦 Scripts
 
-## Join the community
+```jsonc
+// package.json (relevant)
+{
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "typecheck": "tsc --noEmit"
+  }
+}
+```
 
-Join our community of developers creating universal apps.
+---
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 🗂️ Project Structure
+
+```
+app/                              # Expo Router entry points (thin)
+  _layout.tsx
+  index.tsx                       # Home with themed button → /todos
+  todos.tsx                       # Route that renders the Todos screen
+
+modules/
+  shared/
+    i18n/
+      i18n.ts                     # i18next initialization
+      languages.ts                # language registry & constants
+      components/LanguageSwitcher.tsx
+      locales/
+        en/common.json
+        es/common.json
+        pt/common.json
+    theme/
+      tokens.ts                   # theme tokens (colors, radius, spacing)
+      ThemeProvider.tsx           # Theme context (Light/Dark/System + persistence)
+      nav.ts                      # map theme → React Navigation theme
+      components/ThemeSwitcher.tsx
+      index.ts
+
+  todos/                          # Feature module: Todos
+    domain/
+      entities/Todo.ts
+      repositories/TodoRepository.ts
+    data/
+      sources/local/AsyncStorageTodoDataSource.ts
+      repositories/TodoRepositoryImpl.ts
+    di/
+      repo.ts                     # module-level repo singleton
+    features/                     # ✅ Use-case vertical slices
+      add-todo/
+        application/AddTodo.ts
+        presentation/AddTodoForm.tsx
+        di.ts
+        index.ts
+      list-todos/
+        application/ListTodos.ts
+        presentation/
+         components/TodoItem.tsx     # UI part
+         TodoList.tsx
+        di.ts
+        index.ts
+      toggle-todo/
+        application/ToggleTodo.ts
+        di.ts
+        index.ts
+      delete-todo/
+        application/DeleteTodo.ts
+        di.ts
+        index.ts
+    screens/
+      TodosScreen.tsx             # composes the slices
+    index.ts                      # module barrel
+
+babel.config.js                   # RN bundler aliases
+tsconfig.json                     # TS aliases
+```
+
+## 🧱 Architecture
+
+### Clean Architecture (per feature)
+- **Domain**: business entities + repository **interfaces** only (pure TypeScript)
+- **Application (Use Cases)**: orchestrate domain rules; depend on **interfaces**  
+  _Examples: `AddTodo`, `ListTodos`, `ToggleTodo`, `DeleteTodo`_
+- **Data/Infrastructure**: concrete repository implementations (AsyncStorage now)
+- **Presentation**: React Native components; no storage logic; calls use cases
+- **DI**: tiny containers wiring implementations into use cases
+
+```
+Presentation → Use Cases → Repository Interface ← Repository Impl (Data)
+             (application)     (domain)             (infrastructure)
+```
+
+### Feature Slices
+Each use case is packaged as a **feature** (`modules/todos/features/<use-case>`), with its own UI + DI.  
+`TodosScreen` composes the slices and coordinates flow.
+
+## 💡 Notes
+
+- Persisted values live in AsyncStorage: todos, selected theme, language.  
+- On Android, if testing persistence, you can “Clear Storage” for Expo Go to reset.  
+- If you hit bundling hiccups on Node `v22.18.0`, clear caches as shown above.
