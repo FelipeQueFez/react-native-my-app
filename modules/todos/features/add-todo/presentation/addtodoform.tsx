@@ -1,8 +1,10 @@
+import { useTheme } from "@shared/theme";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, TextInput, View } from "react-native";
 
 export default function AddTodoForm({ onAdd }: { onAdd: (title: string) => Promise<void> }) {
+  const { theme } = useTheme();
   const [title, setTitle] = useState("");
   const { t } = useTranslation();
 
@@ -18,7 +20,8 @@ export default function AddTodoForm({ onAdd }: { onAdd: (title: string) => Promi
         value={title}
         onChangeText={setTitle}
         placeholder={t("placeholder.addTask")}
-        style={{ flex: 1, borderWidth: 1, borderColor: "#ccc", borderRadius: 8, paddingHorizontal: 12, height: 44 }}
+        placeholderTextColor={theme.colors.text}
+        style={{ flex: 1, borderWidth: 1, borderColor: "#ccc", borderRadius: 8, paddingHorizontal: 12, height: 44, color:theme.colors.text, }}
         returnKeyType="done"
         onSubmitEditing={submit}
       />

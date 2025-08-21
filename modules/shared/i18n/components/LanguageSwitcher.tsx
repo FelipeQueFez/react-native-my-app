@@ -1,3 +1,4 @@
+import { useTheme } from "@shared/theme";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 import { setAppLanguage } from "../i18n";
@@ -5,6 +6,7 @@ import { supportedLanguages, type AppLanguage } from "../languages";
 
 export default function LanguageSwitcher() {
   const { i18n } = useTranslation();
+  const { theme } = useTheme();
   const current = (i18n.language || "en").split("-")[0] as AppLanguage;
 
   return (
@@ -26,7 +28,7 @@ export default function LanguageSwitcher() {
             accessibilityRole="button"
             accessibilityLabel={`Switch language to ${label}`}
           >
-            <Text style={{ fontWeight: active ? "700" : "400" }}>{label}</Text>
+            <Text style={{ fontWeight: active ? "700" : "400", color: theme.colors.text, }}>{label}</Text>
           </Pressable>
         );
       })}

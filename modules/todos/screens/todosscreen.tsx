@@ -1,4 +1,6 @@
 import LanguageSwitcher from "@shared/i18n/components/LanguageSwitcher"; // path alias if you set it
+import { useTheme } from "@shared/theme";
+import ThemeSwitcher from "@shared/theme/components/ThemeSwitcher";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, SafeAreaView, Text, View } from "react-native";
@@ -9,6 +11,7 @@ import { TodoList, listTodosUC } from "../features/list-todos";
 import { toggleTodoUC } from "../features/toggle-todo";
 
 export default function TodosScreen() {
+  const { theme } = useTheme();
   const { t } = useTranslation();
   const [todos, setTodos] = useState<Todo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -23,9 +26,10 @@ export default function TodosScreen() {
   useEffect(() => { refresh(); }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ padding: 16, gap: 12 }}>
-        <Text style={{ fontSize: 24, fontWeight: "700" }}>{t("todos.title")}</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
+      <View style={{ padding: theme.spacing(4), gap: theme.spacing(3) }}>
+        <Text style={{ fontSize: 24, fontWeight: "700", color: theme.colors.text }}>{t("todos.title")}</Text>
+        <ThemeSwitcher />
         <LanguageSwitcher />
         <AddTodoForm onAdd={async (title) => { await addTodoUC.execute(title); await refresh(); }} />
         {loading && <ActivityIndicator size="small" />}
