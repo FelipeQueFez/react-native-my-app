@@ -1,6 +1,5 @@
-import { Todo } from "../../domain/entities/todo";
-import { ITodoRepository } from "../../domain/repositories/todorepository";
-
+import { Todo } from "../../../domain/entities/todo";
+import { ITodoRepository } from "../../../domain/repositories/todorepository";
 
 export class ListTodos {
   constructor(private repo: ITodoRepository) {}

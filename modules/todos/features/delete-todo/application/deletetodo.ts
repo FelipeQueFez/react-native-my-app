@@ -1,4 +1,4 @@
-import { ITodoRepository } from "../../domain/repositories/todorepository";
+import { ITodoRepository } from "../../../domain/repositories/todorepository";
 
 export class DeleteTodo {
   constructor(private repo: ITodoRepository) {}

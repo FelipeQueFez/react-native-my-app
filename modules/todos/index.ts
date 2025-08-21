@@ -1,2 +1,2 @@
-export { default as TodoListScreen } from "./presentation/screens/todolistscreen";
+export { default as TodosScreen } from "./screens/todosscreen";
 

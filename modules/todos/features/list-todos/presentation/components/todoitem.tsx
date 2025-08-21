@@ -1,5 +1,5 @@
 import { Pressable, Text, View } from "react-native";
-import type { Todo } from "../../domain/entities/todo";
+import type { Todo } from "../../../../domain/entities/todo";
 
 type Props = {
   todo: Todo;

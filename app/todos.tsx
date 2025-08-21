@@ -1,2 +1,2 @@
-import { TodoListScreen } from "@modules/todos";
-export default TodoListScreen;
+import { TodosScreen } from "@modules/todos";
+export default TodosScreen;
